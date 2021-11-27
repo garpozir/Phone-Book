@@ -1,5 +1,5 @@
 /*
- * Phone Book by Daniel Kim
+ * Phone Book by garpozir@gmail.com
  * 
  */
 
@@ -12,6 +12,12 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.border.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+
 
 
 class PhoneInfo implements Serializable
@@ -27,13 +33,13 @@ class PhoneInfo implements Serializable
 	
 	public void showPhoneInfo()
 	{
-		System.out.println("name: "+name);
-		System.out.println("phone: "+phoneNumber);
+		System.out.println("اسم: "+name);
+		System.out.println("تلفن: "+phoneNumber);
 	}
 	
 	public String toString()
 	{
-		return "name: "+name+'\n'+"phone: "+phoneNumber+'\n';
+		return "اسم: "+name+'\n'+"تلفن: "+phoneNumber+'\n';
 	}
 	
 	public int hashCode()
@@ -66,14 +72,14 @@ class PhoneUnivInfo extends PhoneInfo
 	public void showPhoneInfo()
 	{
 		super.showPhoneInfo();
-		System.out.println("major: "+major);
-		System.out.println("year: "+year);
+		System.out.println("گروه: "+major);
+		System.out.println("سال: "+year);
 	}
 	
 	public String toString()
 	{
 		return super.toString()
-		    +"major: "+major+'\n'+"year: "+year+'\n';
+		    +"گروه: "+major+'\n'+"سال: "+year+'\n';
 	}
 }
 
@@ -90,19 +96,20 @@ class PhoneCompanyInfo extends PhoneInfo
 	public void showPhoneInfo()
 	{
 		super.showPhoneInfo();
-		System.out.println("company: "+company);
+		System.out.println("شرکت: "+company);
 	}
 	
 	public String toString()
 	{
 		return super.toString()
-		    +"company: "+company+'\n';
+		    +"شرکت: "+company+'\n';
 	}
 }
 
 class PhoneBookManager
 {
 	private final File dataFile = new File("PhoneBook.dat");
+	
 	HashSet<PhoneInfo> infoStorage = new HashSet<PhoneInfo>();
 	
 	static PhoneBookManager inst = null;
@@ -213,18 +220,78 @@ class SearchEventHandler implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		String name = searchField.getText();
+		if (name.equals("") == true){
+	textArea.append("اسم مخاطب را در مقدار جستجو وارد کنید\n"+"---------\n");
+	return;
+}
 		PhoneBookManager manager=PhoneBookManager.createManagerInst();
 		String srchResult = manager.searchData(name);
 		if(srchResult == null)
-		{
-			textArea.append("Search Failed: info does not exist.\n");
+		{assert true;
+			//textArea.append("چیزی پیدا نشد\n");
 		}
 		else
-		{
-			textArea.append("Search Completed:\n");
-			textArea.append(srchResult);
-			textArea.append("\n");
+		{assert true;
+			//textArea.append("یه چیزی پیدا شد\n");
+			//textArea.append(srchResult);
+			//textArea.append("\n");
 		}
+
+		String fileName = "db.dbl";
+        String line = null;
+                StringBuffer inputBuffer = new StringBuffer();
+       String textFieldValue = name;
+       //String textFieldValuee = phone.getText();
+	   boolean areYouBroke2 = true;
+	   	   boolean areYouBroke = true;
+
+
+ try {
+
+            FileReader fr = new FileReader(fileName);
+
+            BufferedReader br = new BufferedReader(fr);
+int lineNum = 0;
+while( (line = br.readLine() ) != null ) {
+	//System.out.println(lineNum+"+"+line);
+
+if (line.equals(textFieldValue)) {
+areYouBroke2 = false;
+}
+}
+  br.close();
+FileReader fr2 = new FileReader(fileName);
+
+            BufferedReader br2 = new BufferedReader(fr2);
+
+if (areYouBroke2 == true){
+	
+textArea.append("چیزی پیدا نشد\n"+"---------\n");}else{
+textArea.append("پیدا شد\n");
+/////inja
+while( (line = br2.readLine() ) != null ) {
+if (areYouBroke == false){
+textArea.append("شماره تلفن "+line+"\n"+"---------\n");
+
+break;
+}
+
+if (areYouBroke == true){
+
+if (line.equals(textFieldValue)) {
+areYouBroke = false;
+textArea.append("اسم "+textFieldValue+"\n");
+
+}
+}
+}
+}
+
+}
+        catch(IOException ex) {
+            System.out.println(" ");
+        }
+////////asliiiiiiiiiiii
 	}
 }
 
@@ -258,76 +325,328 @@ class AddEventHandler implements ActionListener
 			company = major;
 			info = new PhoneCompanyInfo(name.getText(), phone.getText(), company.getText());
 			isAdded = manager.infoStorage.add(info);
+			
 		}		
 		else if(major.getText().equals("") == false && year.getText().equals("") == false)
 		{
 			info = new PhoneUnivInfo(name.getText(), phone.getText(), major.getText(), Integer.parseInt(year.getText()));
 			isAdded = manager.infoStorage.add(info);
+			
+			
+			
 		}
 		else
 		{
 			info = new PhoneInfo(name.getText(), phone.getText());
 			isAdded = manager.infoStorage.add(info);
+			
 		}
 		
-		if(isAdded)
-		{
-			text.append("Update Completed.\n");
-		}
-		else
-		{
-			text.append("Update Failed: info already exist.\n");
-		}
+		
+		
+			
+			//shooroooooooooooooooooooo
+			String fileName = "db.dbl";
+        String line = null;
+                StringBuffer inputBuffer = new StringBuffer();
+       String textFieldValue = name.getText();
+       String textFieldValuee = phone.getText();
+       //System.out.println("----------------------------------\n" + textFieldValuee);
+if (textFieldValue.equals("") == true | textFieldValuee.equals("") == true){
+	text.append("اسم و شماره تلفن را وارد کنید\n"+"---------\n");
+	return;
+}
+
+boolean areYouBroke = true;
+boolean areYouBroke2 = true;
+
+        try {
+
+            FileReader fr = new FileReader(fileName);
+
+            BufferedReader br = new BufferedReader(fr);
+int lineNum = 0;
+//System.out.println("+"+br.readLine());
+while( (line = br.readLine() ) != null ) {
+	//System.out.println(lineNum+"+"+line);
+
+if (line.equals(textFieldValue)) {
+areYouBroke2 = false;
+}
+}
+  br.close();
+
+FileReader fr2 = new FileReader(fileName);
+
+            BufferedReader br2 = new BufferedReader(fr2);
+
+if (areYouBroke2 == true){
+	
+text.append(textFieldValue+" "+"ثبت شد\n"+"---------\n");
+			//FileWriter myWriter = new FileWriter("db.dbl", true);
+
+
+try {
+                             FileWriter myWriter = new FileWriter("db.dbl", true);
+                                      // if(isAdded){
+      myWriter.write(name.getText()+"\n"+phone.getText()+"\n"+"##"+"\n");//}
+      myWriter.close();
+      } catch (IOException ex) {
+      System.out.println(" ");
+      
+    }
+
+
+
+
+	  
+}else{
+
+
+               
+
+
+
+text.append("شماره تلفن"+" "+textFieldValue+" "+"ویرایش شد\n"+"---------\n");
+
+            while( (line = br2.readLine() ) != null ) {
+				//System.out.println("+"+inputBuffer);
+            lineNum++;
+            //System.out.println(areYouBroke);
+             if (areYouBroke == false){
+             //System.out.println("+"+areYouBroke);
+             areYouBroke = true;
+             //System.out.println("="+areYouBroke);
+             inputBuffer.append(textFieldValuee+"\n");
+             }
+             else{
+             
+             if (line.equals(textFieldValue)) {
+              areYouBroke = false;
+             // System.out.println(lineNum);
+             inputBuffer.append(line+"\n");
+  // block of code to be executed if the condition is true
+} else {
+inputBuffer.append(line+"\n");
+
+  // block of code to be executed if the condition is false
+}
+}
+
+                      
+            }
+
+            br.close();
+//
+String inputStr = inputBuffer.toString();
+FileWriter myWriterp = new FileWriter("db.dbl");
+       myWriterp.write(inputStr);
+      myWriterp.close();}
+//
+        }
+        catch(IOException ex) {
+            System.out.println(" ");
+        }
+		
+			//asli
+		
 	}
 }
+
+class adel implements ActionListener
+{
+	JTextArea textArea;
+
+	public adel( JTextArea area)
+	{
+		textArea = area;
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+///////////////////////////////innnnnnnnn
+try {
+
+String strpath="db.dbl";
+FileReader fr = new FileReader(strpath);
+BufferedReader br = new BufferedReader(fr);
+String ch;
+int time=0;
+String Conversion="";
+ArrayList<String> tmp = new ArrayList<String>();
+
+    do {
+        ch = br.readLine();
+        tmp.add(ch);
+        //System.out.println(ch); 
+    } while (ch != null);
+
+    for(int i=tmp.size()-1;i>=0;i--) {
+        //System.out.println(tmp.get(i));
+		if (tmp.get(i)!=null) { 
+			if (tmp.get(i).equals("##")) {textArea.append("#\n");}else{
+		textArea.append(tmp.get(i)+"\n");}
+		}
+
+    }
+		textArea.append("---------\n");
+
+fr.close();
+
+} catch (IOException ex) {
+      System.out.println(" ");
+      
+    }  
+	///////////////////////////////innnnnnnnn
+
+	}
+}
+
+
+
 
 class DeleteEventHandler implements ActionListener
 {
 	JTextField delField;
 	JTextArea textArea;
-	
+
 	public DeleteEventHandler(JTextField field, JTextArea area)
 	{
 		delField = field;
 		textArea = area;
 	}
-	
+
 	public void actionPerformed(ActionEvent e)
 	{
 		String name = delField.getText();
+		            //System.out.println(name);
+if (name.equals("") == true){
+	textArea.append("اسم مخاطب را در مقدار حذف وارد کنید\n"+"---------\n");
+	return;
+}
 		PhoneBookManager manager = PhoneBookManager.createManagerInst();
 		boolean isDeleted = manager.deleteData(name);
 		if(isDeleted)
-			textArea.append("Remove Completed.\n");
+			//textArea.append("حذف انجام شد\n");
+			assert true;
 		else
-			textArea.append("Remove Failed: info does not exist.\n");
+			//textArea.append("چیزی حذف نشد\n");
+			assert true;
+String fileName = "db.dbl";
+        String line = null;
+                StringBuffer inputBuffer = new StringBuffer();
+       String textFieldValue = name;
+       //String textFieldValuee = phone.getText();
+	   boolean areYouBroke2 = true;
+	   	   boolean areYouBroke = true;
+
+String[] parts = textFieldValue.split("\\*");
+
+
+
+//System.out.println(part1);
+
+
+ try {
+
+for (int i = 0; i < parts.length; i++) {
+String part1 = parts[i];
+
+            FileReader fr = new FileReader(fileName);
+
+            BufferedReader br = new BufferedReader(fr);
+int lineNum = 0;
+while( (line = br.readLine() ) != null ) {
+	//System.out.println(lineNum+"+"+line);
+
+if (line.equals(part1)) {
+areYouBroke2 = false;
+break;
+}
+}
+  br.close();
+FileReader fr2 = new FileReader(fileName);
+
+            BufferedReader br2 = new BufferedReader(fr2);
+
+if (areYouBroke2 == true){
+	
+textArea.append("چیزی برای حذف پیدا نشد\n"+"---------\n");}else{
+/////inja
+while( (line = br2.readLine() ) != null ) {
+
+
+
+
+
+if (line.equals(part1)) {
+areYouBroke = false;
+textArea.append("مخاطب "+part1+" "+"حذف شد "+"\n"+"---------\n");
+br2.readLine();
+br2.readLine();
+}else{
+inputBuffer.append(line+"\n");}
+
+}
+//
+
+br2.close();
+String inputStr = inputBuffer.toString();
+FileWriter myWriterp = new FileWriter("db.dbl");
+       myWriterp.write(inputStr);
+      myWriterp.close();
+	  inputBuffer.setLength(0);
+
+}
+
+}
+}
+        catch(IOException ex) {
+            System.out.println(" ");
+        }
+
+			//////asliiiiiiiiiiiiiii
 	}
 }
 
 class MainFrame extends JFrame
 {
 	JTextField srchField = new JTextField(15);
-	JButton srchBtn = new JButton("SEARCH");
+	JButton srchBtn = new JButton("جستجو");
 	
-	JButton addBtn = new JButton("ADD");
-	JRadioButton rbtn1 = new JRadioButton("General");
-	JRadioButton rbtn2 = new JRadioButton("University");
-	JRadioButton rbtn3 = new JRadioButton("Company");
+	JButton addBtn = new JButton("ثبت/ویرایش");
+		JButton adelBtn = new JButton("معکوس کردن");
+
+	JRadioButton rbtn1 = new JRadioButton("عمومی");
+	JRadioButton rbtn2 = new JRadioButton("دانشگاه");
+	JRadioButton rbtn3 = new JRadioButton("شرکت");
 	ButtonGroup buttonGroup = new ButtonGroup();
 	
-	JLabel nameLabel = new JLabel("NAME");
+	JLabel nameLabel = new JLabel("نام و نام خانوادگی");
 	JTextField nameField = new JTextField(15);
-	JLabel phoneLabel = new JLabel("PHONE NUMBER");
+	JLabel phoneLabel = new JLabel("شماره تلفن");
 	JTextField phoneField = new JTextField(15);
-	JLabel majorLabel = new JLabel("MAJOR");
+	JLabel majorLabel = new JLabel("گروه");
 	JTextField majorField = new JTextField(15);
-	JLabel yearLabel = new JLabel("YEAR");
+	JLabel yearLabel = new JLabel("سال");
 	JTextField yearField = new JTextField(15);
 		
 	JTextField delField = new JTextField(15);
-	JButton delBtn = new JButton("DEL");
+	JButton delBtn = new JButton("حذف");
+
+		//String tooltipText = delBtn.getToolTipText();
 	
-	JTextArea textArea = new JTextArea(10, 25);
+
+        
+
+
+	JTextArea textArea = new JTextArea("**********"+"خوش آمدید"+"**********\n"+"---------\n");
+
+
+
+	
+
+
 
 	public MainFrame(String title)
 	{
@@ -337,14 +656,14 @@ class MainFrame extends JFrame
 		setLayout(new GridLayout(0,2,0,0));
 		Border border = BorderFactory.createEtchedBorder();
 		
-		Border srchBorder = BorderFactory.createTitledBorder(border, "Search");
+		Border srchBorder = BorderFactory.createTitledBorder(border, "جستجو");
 		JPanel srchPanel = new JPanel();
 		srchPanel.setBorder(srchBorder);
 		srchPanel.setLayout(new FlowLayout());
 		srchPanel.add(srchField);
 		srchPanel.add(srchBtn);
 		
-		Border addBorder=BorderFactory.createTitledBorder(border, "Add");
+		Border addBorder=BorderFactory.createTitledBorder(border, "ثبت/ویرایش");
 		JPanel addPanel = new JPanel();
 		addPanel.setBorder(addBorder);
 		addPanel.setLayout(new FlowLayout());
@@ -360,6 +679,8 @@ class MainFrame extends JFrame
 		addPanel.add(rbtn2);
 		addPanel.add(rbtn3);
 		addPanel.add(addBtn);
+				addPanel.add(adelBtn);
+
 		
 		addInputPanel.add(nameLabel);
 		addInputPanel.add(nameField);
@@ -386,6 +707,7 @@ class MainFrame extends JFrame
 						if(e.getStateChange() == ItemEvent.SELECTED)
 						{
 							majorLabel.setVisible(false);
+							
 							majorField.setVisible(false);
 							yearLabel.setVisible(false);
 							yearField.setVisible(false);			
@@ -403,11 +725,11 @@ class MainFrame extends JFrame
 					{
 						if(e.getStateChange() == ItemEvent.SELECTED)
 						{
-							majorLabel.setVisible(true);
-							majorLabel.setText("MAJOR");
-							majorField.setVisible(true);
-							yearLabel.setVisible(true);
-							yearField.setVisible(true);
+							majorLabel.setVisible(false);
+							majorLabel.setText("گروه");
+							majorField.setVisible(false);
+							yearLabel.setVisible(false);
+							yearField.setVisible(false);
 						}
 					}
 				}
@@ -420,9 +742,9 @@ class MainFrame extends JFrame
 					{
 						if(e.getStateChange() == ItemEvent.SELECTED)
 						{
-							majorLabel.setVisible(true);
-							majorLabel.setText("COMPANY");
-							majorField.setVisible(true);
+							majorLabel.setVisible(false);
+							majorLabel.setText("شرکت");
+							majorField.setVisible(false);
 							yearLabel.setVisible(false);
 							yearField.setVisible(false);
 							yearField.setText("");
@@ -431,15 +753,17 @@ class MainFrame extends JFrame
 				}
 		);
 		
-		Border delBorder = BorderFactory.createTitledBorder(border, "Delete");
+		Border delBorder = BorderFactory.createTitledBorder(border, "حذف");
 		JPanel delPanel = new JPanel();
 		delPanel.setBorder(delBorder);
 		delPanel.setLayout(new FlowLayout());
 		delPanel.add(delField);
+			delField.setToolTipText("برای حذف چند مخاطب آنها را با * از هم جدا کنید");
+
 		delPanel.add(delBtn);
 		
 		JScrollPane scrollTextArea = new JScrollPane(textArea);	
-		Border textBorder=BorderFactory.createTitledBorder(border, "Infomation Board");
+		Border textBorder=BorderFactory.createTitledBorder(border, "اطلاعات");
 		scrollTextArea.setBorder(textBorder);
 		
 		JPanel actionPanel = new JPanel();
@@ -454,9 +778,73 @@ class MainFrame extends JFrame
 		srchBtn.addActionListener(new SearchEventHandler(srchField, textArea));
 		addBtn.addActionListener(new AddEventHandler(nameField, phoneField, majorField, yearField, textArea));
 		delBtn.addActionListener(new DeleteEventHandler(delField, textArea));
-		
+		adelBtn.addActionListener(new adel( textArea));
+
+		rbtn2.setVisible(false);
+							rbtn3.setVisible(false);
+							
 		setVisible(true);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
+//akar
+ /*
+try {
+String fileNamea = "db.dbl";
+        String linea = null;
+                StringBuffer inputBuffer2 = new StringBuffer();
+
+FileReader fr20 = new FileReader(fileNamea);
+
+            BufferedReader br20 = new BufferedReader(fr20);
+while( (linea = br20.readLine() ) != null ) {
+inputBuffer2.append(linea+"\n");
+      System.out.println(inputBuffer2);
+
+}
+  br20.close();
+  } catch (IOException ex) {
+      System.out.println(" ");
+      
+    }   
+*/
+
+
+
+  
+
+
+
+
+//akar
+boolean areYouBroke4 = true;
+String line = null;
+int num = 0;
+        try {
+
+            FileReader fr = new FileReader("db.dbl");
+
+            BufferedReader br = new BufferedReader(fr);
+
+
+while( (line = br.readLine() ) != null ) {
+areYouBroke4 = false;
+num++;
+if (line.equals("##")) 
+{textArea.append("***************\n");
+}else{
+if (num == 1 | (num-1)%3==0)
+{textArea.append("اسم"+" "+line+"\n");}
+else{textArea.append("شماره تلفن "+line+"\n");}
+}}
+  br.close();
+               if (areYouBroke4 == false){
+textArea.append("---------\n");}
+
+      } catch (IOException ex) {
+      System.out.println(" ");
+      
+    }    
+
+
 	}
 }
 
@@ -465,6 +853,8 @@ class PhoneBook
 	public static void main(String[] args)
 	{
 		PhoneBookManager manager = PhoneBookManager.createManagerInst();
-		MainFrame winFrame = new MainFrame("Phone Book by Daniel Kim");
+		MainFrame winFrame = new MainFrame("دفترچه تلفن حرفه ای");
+	
 	}
 }
+
